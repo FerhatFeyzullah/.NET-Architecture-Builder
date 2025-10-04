@@ -30,7 +30,7 @@ It takes **project name**, **project location**, and **.NET version** from the u
 ---
 
 ## 🔧 Usage
-1. Run the application.
+1. To run the application, simply extract publish.rar and run setup.exe inside it.
 2. Enter the new **Project Name**.  
    _(Any spaces will be automatically removed)_
 3. Select a **Project Location** folder.
