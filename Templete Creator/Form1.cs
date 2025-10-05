@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -92,10 +93,22 @@ namespace TempleteCreator
 
 
 
+            // Domain
             RunDotnet($"new classlib -n {projectName}.Domain --framework net{dotnetVersion}", corePath);
+            File.Delete(Path.Combine(corePath, $"{projectName}.Domain", "Class1.cs"));
+
+            // Application
             RunDotnet($"new classlib -n {projectName}.Application --framework net{dotnetVersion}", corePath);
+            File.Delete(Path.Combine(corePath, $"{projectName}.Application", "Class1.cs"));
+
+            // Infrastructure
             RunDotnet($"new classlib -n {projectName}.Infrastructure --framework net{dotnetVersion}", infrastructurePath);
+            File.Delete(Path.Combine(infrastructurePath, $"{projectName}.Infrastructure", "Class1.cs"));
+
+            // Persistence
             RunDotnet($"new classlib -n {projectName}.Persistence --framework net{dotnetVersion}", infrastructurePath);
+            File.Delete(Path.Combine(infrastructurePath, $"{projectName}.Persistence", "Class1.cs"));
+
             RunDotnet($"new webapi -n {projectName}.API --framework net{dotnetVersion}", presentationPath);
             RunDotnet($"new sln -n {projectName}", rootPath);
 
@@ -112,6 +125,14 @@ namespace TempleteCreator
             RunDotnet($"add {infrastructurePath}\\{projectName}.Persistence\\{projectName}.Persistence.csproj reference {corePath}\\{projectName}.Domain\\{projectName}.Domain.csproj", rootPath);
             RunDotnet($"add {presentationPath}\\{projectName}.API\\{projectName}.API.csproj reference {corePath}\\{projectName}.Application\\{projectName}.Application.csproj", rootPath);
             RunDotnet($"add {presentationPath}\\{projectName}.API\\{projectName}.API.csproj reference {infrastructurePath}\\{projectName}.Infrastructure\\{projectName}.Infrastructure.csproj", rootPath);
+
+            // Klasörleri projeye tanıt
+            AddFoldersToProject(Path.Combine(corePath, $"{projectName}.Domain", $"{projectName}.Domain.csproj"));
+            AddFoldersToProject(Path.Combine(corePath, $"{projectName}.Application", $"{projectName}.Application.csproj"));
+            AddFoldersToProject(Path.Combine(infrastructurePath, $"{projectName}.Infrastructure", $"{projectName}.Infrastructure.csproj"));
+            AddFoldersToProject(Path.Combine(infrastructurePath, $"{projectName}.Persistence", $"{projectName}.Persistence.csproj"));
+            AddFoldersToProject(Path.Combine(presentationPath, $"{projectName}.API", $"{projectName}.API.csproj"));
+
         }
 
 
@@ -130,6 +151,39 @@ namespace TempleteCreator
                 process.WaitForExit();
             }
         }
+
+        private void AddFoldersToProject(string projectFilePath)
+        {
+            // Proje dosyasını oku
+            var lines = File.ReadAllLines(projectFilePath).ToList();
+
+            // Eğer </Project> satırı yoksa güvenlik önlemi olarak çık
+            int insertIndex = lines.FindLastIndex(line => line.Contains("</Project>"));
+            if (insertIndex == -1) return;
+
+            // src klasörleri bul
+            var projectDir = Path.GetDirectoryName(projectFilePath);
+            var folders = Directory.GetDirectories(projectDir, "*", SearchOption.AllDirectories)
+                       .Where(f => !f.EndsWith("bin") && !f.EndsWith("obj"))
+                       .ToList();
+
+
+            // Her klasörü Include olarak ekle
+            foreach (var folder in folders)
+            {
+                string relativePath = folder.Replace(projectDir + "\\", "").Replace("\\", "/");
+                string itemGroup = $"  <ItemGroup><Folder Include=\"{relativePath}/\" /></ItemGroup>";
+
+                if (!lines.Any(l => l.Contains($"Include=\"{relativePath}/\"")))
+                {
+                    lines.Insert(insertIndex, itemGroup);
+                }
+            }
+
+            // Dosyayı yeniden yaz
+            File.WriteAllLines(projectFilePath, lines);
+        }
+
 
 
         private void fileLocationBrowser_Click(object sender, EventArgs e)

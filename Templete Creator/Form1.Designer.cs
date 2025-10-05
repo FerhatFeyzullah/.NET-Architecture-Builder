@@ -152,9 +152,9 @@
             this.label2.Font = new System.Drawing.Font("Arial Rounded MT Bold", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(30, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(229, 15);
+            this.label2.Size = new System.Drawing.Size(225, 15);
             this.label2.TabIndex = 11;
-            this.label2.Text = ".NET Project Architecture Creator";
+            this.label2.Text = ".NET Project Architecture Builder";
             // 
             // Form1
             // 
@@ -168,7 +168,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Architecture Creator";
+            this.Text = "Architecture Builder";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
