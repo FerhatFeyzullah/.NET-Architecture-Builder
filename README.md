@@ -1,4 +1,4 @@
-# 🧩 Template Creator
+# 🧩 .NET Architecture Builder
 
 This project is a Windows Forms application developed to easily create a **.NET Backend project architecture** based on **Onion Architecture**.  
 It takes **project name**, **project location**, and **.NET version** from the user, then automatically generates the required folders and layers.
