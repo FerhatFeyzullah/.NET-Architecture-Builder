@@ -30,13 +30,14 @@ It takes **project name**, **project location**, and **.NET version** from the u
 ---
 
 ## 🔧 Usage
-1. To run the application, simply extract publish.rar and run setup.exe inside it.
-2. Enter the new **Project Name**.  
+1. Inside the publish.rar, run setup.exe to install the application.
+2. Once installed, a desktop shortcut will be automatically created — you can launch the app directly from there
+3. Enter a Project Name.
    _(Any spaces will be automatically removed)_
-3. Select a **Project Location** folder.
-4. Choose the **.NET Version** (e.g., `8.0`, `7.0`).
-5. Click the **Create Project** button.
-6. The application will generate the necessary layers and add the references, providing you with a ready-to-use solution.
+4. Select a **Project Location** folder.
+5. Choose the **.NET Version** (e.g., `8.0`, `7.0`).
+6. Click the **Create Project** button.
+7. The application will generate the necessary layers and add the references, providing you with a ready-to-use solution.
 
 ---
 
@@ -47,11 +48,33 @@ MyProject/
 │
 ├── Core/
 │   ├── MyProject.Domain/
+│   │   ├── Entities/
+│   │   ├── Interfaces/
+│   │   └── Enums/
+│   │
 │   └── MyProject.Application/
+│       ├── CQRS/
+│       ├── DTOs/
+│       ├── Mapping/
+│       ├── Repositories/
+│       ├── ServiceExtensions/
+│       ├── Services/
+│       ├── UnitOfWorks/
+│       └── Validations/
 │
 ├── Infrastructure/
 │   ├── MyProject.Infrastructure/
+│   │   ├── Interfaces/
+│   │   ├── ServiceExtensions/
+│   │   └── Services/
+│   │
 │   └── MyProject.Persistence/
+│       ├── Configurations/
+│       ├── DbContext/
+│       ├── Repositories/
+│       ├── ServiceExtensions/
+│       ├── Services/
+│       └── UnitOfWorks/
 │
 └── Presentation/
     └── MyProject.API/
